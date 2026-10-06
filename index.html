@@ -1163,7 +1163,7 @@ let activeIdx = 0;
 let busy = false;
 
 // ── GROQ ──────────────────────────────────────────────────────────────────────
-const GROQ_MODEL = 'llama3-8b-8192';
+const GROQ_MODEL = 'llama-3.1-8b-instant';
 let GROQ_KEY = (() => { try { return localStorage.getItem('groq_key') || ''; } catch(e) { return ''; } })();
 
 function getOrAskGroqKey() {
