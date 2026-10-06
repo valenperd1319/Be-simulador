@@ -1164,11 +1164,10 @@ let busy = false;
 
 // ── GROQ ──────────────────────────────────────────────────────────────────────
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
-let GROQ_KEY = localStorage.getItem('groq_key') || '';
+let GROQ_KEY = (() => { try { return localStorage.getItem('groq_key') || ''; } catch(e) { return ''; } })();
 
 function getOrAskGroqKey() {
-  const saved = localStorage.getItem('groq_key');
-  if (saved) { GROQ_KEY = saved; return true; }
+  try { const saved = localStorage.getItem('groq_key'); if (saved) { GROQ_KEY = saved; return true; } } catch(e) {}
   return false;
 }
 
@@ -1189,7 +1188,7 @@ function saveKey() {
     return;
   }
   GROQ_KEY = val;
-  localStorage.setItem('groq_key', val);
+  try { localStorage.setItem('groq_key', val); } catch(e) {}
   hideKeyModal();
   document.getElementById('key-error').textContent = '';
   updateKeyBtn();
@@ -1197,7 +1196,7 @@ function saveKey() {
 
 function clearKey() {
   GROQ_KEY = '';
-  localStorage.removeItem('groq_key');
+  try { localStorage.removeItem('groq_key'); } catch(e) {}
   updateKeyBtn();
   showKeyModal();
 }
@@ -1245,7 +1244,7 @@ const states = PERSONAS.map(() => ({ turns: [], history: [] }));
 function loadAll() {
   PERSONAS.forEach((p, i) => {
     try {
-      const saved = localStorage.getItem(STORAGE_PREFIX + p.id);
+      let saved; try { saved = localStorage.getItem(STORAGE_PREFIX + p.id); } catch(e) {}
       if (saved) states[i] = JSON.parse(saved);
     } catch(e) {}
   });
